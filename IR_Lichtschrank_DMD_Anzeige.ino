@@ -23,9 +23,9 @@ const long sperrfrist = 3000;                     //Sperrfrist in Millisekunden,
 const int setupDelay = 50;                        //Duration of the ir-sensor-init-loop (during setup()) in milliseconds; number of cycles * setupDelay = duration of initialisation (default = 2 sec)
 const int loopDelay = 100;                        //Duration of the actual loop in milliseconds (avoid high values, or the light-barrier might not work (or, better: might not recognize crossing of the barrier))
 
-const int numSetupCycles = 40;                    //Number of cycles for initial IR-sensor setup
+const int numSetupCycles = 20;                    //Number of cycles for initial IR-sensor setup
 
-const int sensitivity_delta = 60;                 //Crossing of the light barrier is measured by a difference between the current light value and the average value.
+const int sensitivity_delta = 80;                 //Crossing of the light barrier is measured by a difference between the current light value and the average value.
 
 const int distance = 10;                          //Distance in meters to run/ride before the barrier is crossed again; is used to calculate and display the speed
 
@@ -38,7 +38,6 @@ const unsigned int ergebnisAnzeigeDauer = 7000;   //Dauer der Anzeige der Ergebn
 **************************************/
 
 //Helper variables
-int i = 0;
 int iMin = 999;
 int iMax = 0;
 int delta = 0;
@@ -94,7 +93,9 @@ void drawText(String dispString){
 
 void calibrateSensorsAndClearScreen(){
 
-    while (initialisierung){    
+  int i = 0;
+
+  while (initialisierung){    
 
     currentValue = analogRead(irSensorInput);
 
@@ -122,6 +123,8 @@ void calibrateSensorsAndClearScreen(){
     }
 
   }
+  //Reset for next calibration
+  initialisierung = true;
 
 }
 
@@ -152,7 +155,7 @@ void setup() {
 //  }
 
   dmd.clearScreen( true );            
-  delay(500);  
+  delay(200);  
 
   /***************************************
       Lichtschranken-Setup
